@@ -11,6 +11,7 @@ using namespace std;
 
 struct node {
     //Card number in hand
+    //Used exclusively for card selection
     int cardNum;
     //Card in hand
     card _c;
@@ -68,6 +69,7 @@ bool usll::addNode(card &c) {
     if(isFull()) return false;
 
     temp = new node;
+    //The card number will be the new quantity
     temp->cardNum = ++qty;
     temp->_c = c;
     temp->next = nullptr;
@@ -91,15 +93,19 @@ bool usll::deleteNode(const int &num, card &c) {
     //If the list is empty
     if(isEmpty()) return false;
 
+    //Invalid possible card numbers
     if (num > qty || num < 1) return false;
 
+    //Start at the beginning of the list
     scan = start;
-    
+
+    //Check first card
     if (scan->cardNum == num) {
         qty--;
 
         start = start->next;
 
+        //Take card out of hand
         c = scan->_c;
 
         delete scan;
@@ -109,6 +115,7 @@ bool usll::deleteNode(const int &num, card &c) {
             return true;
         }
 
+        //Reduce card number of all following cards
         for (scan = start; scan != nullptr; scan = scan->next) {
             scan->cardNum--;
         }
@@ -116,6 +123,7 @@ bool usll::deleteNode(const int &num, card &c) {
         return true;
     }
 
+    //Check each card
     for (; scan->next != nullptr; scan = scan->next) {
         if (scan->next->cardNum == num) {
             temp = scan->next;
@@ -130,6 +138,7 @@ bool usll::deleteNode(const int &num, card &c) {
 
             delete temp;
         }
+        //Reduce the card number of all following cards
         if (scan->next->cardNum > num) {
             scan->next->cardNum--;
         }
