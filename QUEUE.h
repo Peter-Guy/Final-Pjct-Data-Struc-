@@ -1,9 +1,25 @@
-#include<iostream>
-#include "DATA.h"
-#include "NODE.h"
-
 #ifndef QUEUE_H
 #define QUEUE_H
+
+#include <climits>
+#include "deck.h"
+using namespace std;
+
+#ifndef LINKED_NODE
+#define LINKED_NODE
+
+struct node {
+    //Card number in hand
+	//Unused in queue
+    int cardNum;
+    //Card in hand
+    card _c;
+    //Next card
+    node *next;
+};
+
+#endif
+
 //Class that is a queue that is like a line 
 class queue
 {
@@ -16,8 +32,8 @@ class queue
 	public:
 		queue();
 		queue(int);
-		bool enqueue(int,data&);
-		bool dequeue(int&, data&);
+		bool enqueue(card&);
+		bool dequeue(card&);
 		bool makeEmpty();
 		bool isEmpty();
 		bool isFull();
@@ -42,14 +58,13 @@ queue::queue(int num)
 		max = 1;
 }
 //Enter the queue of values
-bool queue::enqueue(int num, data& data_d)
+bool queue::enqueue(card &c)
 {
 	if(isFull())
 		return false;
 	
 	node* temp = new node;
-	temp->num = num;
-	temp->data_d = data_d;
+	temp->_c = c;
 	temp->next = NULL;
 	qty++;
 	
@@ -60,13 +75,12 @@ bool queue::enqueue(int num, data& data_d)
 	return true;
 }
 //Leaves the queue
-bool queue::dequeue(int & num, data& data_d)
+bool queue::dequeue(card &c)
 {
 	node* temp;
 	if(isEmpty())
 		return false;
-	data_d = out->data_d;
-	num = out->num;
+	c = out->_c;
 	qty--;
 	temp = out;
 	out = out->next;
@@ -94,9 +108,8 @@ bool queue::makeEmpty()
 {
 	while(!isEmpty())
 	{
-		int num;
-		data temp_data;
-		dequeue(num, temp_data);	
+		card temp;
+		dequeue(temp);	
 	}
 	return true;
 }

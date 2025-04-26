@@ -11,7 +11,6 @@ using namespace std;
 
 struct node {
     //Card number in hand
-    //Used exclusively for card selection
     int cardNum;
     //Card in hand
     card _c;
@@ -30,7 +29,6 @@ class usll {
         bool find(const int&, card&);
         bool makeEmpty();
         int getLength();
-        bool display();
         bool isEmpty();
         bool isFull();
         ~usll();
@@ -69,7 +67,6 @@ bool usll::addNode(card &c) {
     if(isFull()) return false;
 
     temp = new node;
-    //The card number will be the new quantity
     temp->cardNum = ++qty;
     temp->_c = c;
     temp->next = nullptr;
@@ -93,19 +90,15 @@ bool usll::deleteNode(const int &num, card &c) {
     //If the list is empty
     if(isEmpty()) return false;
 
-    //Invalid possible card numbers
     if (num > qty || num < 1) return false;
 
-    //Start at the beginning of the list
     scan = start;
-
-    //Check first card
+    
     if (scan->cardNum == num) {
         qty--;
 
         start = start->next;
 
-        //Take card out of hand
         c = scan->_c;
 
         delete scan;
@@ -115,7 +108,6 @@ bool usll::deleteNode(const int &num, card &c) {
             return true;
         }
 
-        //Reduce card number of all following cards
         for (scan = start; scan != nullptr; scan = scan->next) {
             scan->cardNum--;
         }
@@ -123,22 +115,23 @@ bool usll::deleteNode(const int &num, card &c) {
         return true;
     }
 
-    //Check each card
     for (; scan->next != nullptr; scan = scan->next) {
         if (scan->next->cardNum == num) {
+            qty--;
+            
             temp = scan->next;
 
             scan->next = temp->next;
 
-            if (end == temp) {
-                end = scan;
-            }
-
             c = temp->_c;
 
             delete temp;
+
+            if (scan->next == nullptr) {
+                end = scan;
+                return true;
+            }
         }
-        //Reduce the card number of all following cards
         if (scan->next->cardNum > num) {
             scan->next->cardNum--;
         }
@@ -179,22 +172,6 @@ bool usll::makeEmpty() {
 //Return the current value in qty
 int usll::getLength() {
     return qty;
-}
-
-//Output the values in the list
-bool usll::display() {
-    //If the list is empty
-    if(isEmpty()) return false;
-    
-    //Increment through all but the last value in the list
-    for(node *scan = start; scan != end; scan = scan->next) {
-        cout << scan->cardNum << ": " << scan->_c.face << " " 
-            << scan->_c.suit << ", ";
-    }
-    cout << end->cardNum << ": " << end->_c.face << " " 
-        << end->_c.suit << "\n";
-
-    return true;
 }
 
 //Checks if the list is empty based on start being null
