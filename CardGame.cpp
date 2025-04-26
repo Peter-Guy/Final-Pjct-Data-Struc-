@@ -35,7 +35,7 @@ int main() {
 				break;
 			case 4:
 				//Matthew
-				playCrazyEight();
+				playCrazyEights();
 				break;
 			case 5:
 				//Jeremy
