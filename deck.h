@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
 using namespace std;
 
 struct card
@@ -34,6 +35,7 @@ deckOfCards::deckOfCards(int decks)
 {
 	topCard = NULL;
 	numOfDecks = (decks < 1 ? 1 : decks);
+	srand(time(0));
 	loadDeck();
 }
 //////////////////////////////////////////////////////////////////////////////
