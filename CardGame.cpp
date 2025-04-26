@@ -22,28 +22,36 @@ int main() {
 		cin >> gameChoice;
 		switch (gameChoice) {
 			case 1:
-				playWar();
+				//George
+				//playWar();
 				break;
 			case 2:
-				playBlackJack();
+				//Stephen
+				//playBlackJack();
 				break;
 			case 3:
-				playGoBoom();
+				//Peter
+				//playGoBoom();
 				break;
 			case 4:
+				//Matthew
 				playCrazyEight();
 				break;
 			case 5:
-				playFiveCardStud();
+				//Jeremy
+				//playFiveCardStud();
 				break;
 			case 6:
-				playRollingStone();
+				//Joseph
+				//playRollingStone();
 				break;
 			case 7:
-				playNinetyEight();
+				//Colin
+				//playNinetyEight();
 				break;
 			case 8:
-				playThirtyOne();
+				//Evan
+				//playThirtyOne();
 				break;
 			case 9:
 				break;
