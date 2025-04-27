@@ -133,7 +133,6 @@ bool ThirtyOne::loadGame()
 		}
 	}
 	discardPile = deck[round].takeCard();
-	if (round == 0)
 	return true;
 }
 
