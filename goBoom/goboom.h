@@ -1,0 +1,389 @@
+#ifndef GOBOOM_H
+#define GOBOOM_H
+
+#include <iostream>
+#include <string>
+#include "goBoom/deck.h"
+#include "goBoom/QUEUE.h"
+#include "goBoom/STACK.h"
+#include "goBoom/usll.h"
+
+class GoBoomGame {
+private:
+    // Game components
+    deckOfCards* deck;          // Deck of cards
+    Stack discardPile;          // Discard pile using Stack
+    queue drawPile;             // Draw pile using Queue
+    usll playerHands[3];        // Player hands using Unsorted Linked List
+    
+    int currentPlayer;          // Current player's turn (0, 1, or 2)
+    bool gameOver;              // Flag to indicate if the game is over
+    char lastSuit;              // Last suit played
+    char lastFace;              // Last face played
+    
+    // Private methods
+    void initializeGame();
+    void dealCards();
+    bool isValidPlay(const card& c) const;
+    void displayGameState() const;
+    void displayHand(int playerIndex) const;
+    void displayDiscardTop() const;
+    bool playCard(int playerIndex, int cardPosition);
+    bool drawCard(int playerIndex);
+    bool checkGameOver();
+    void cleanupMemory();
+
+public:
+    // Constructor and destructor
+    GoBoomGame();
+    ~GoBoomGame();
+    
+    // Public methods
+    void startGame();
+    void playTurn();
+    void switchPlayer();
+    void displayRules() const;
+    bool isGameOver() const;
+    int getWinner() const;
+};
+
+// Constructor
+inline GoBoomGame::GoBoomGame() {
+    deck = nullptr;
+    for (int i = 0; i < 3; i++) {
+        playerHands[i] = usll();
+    }
+    currentPlayer = 0;
+    gameOver = false;
+    lastSuit = '\0';
+    lastFace = '\0';
+}
+
+// Destructor
+inline GoBoomGame::~GoBoomGame() {
+    cleanupMemory();
+}
+
+// Initialize the game
+inline void GoBoomGame::initializeGame() {
+    // Clean up any existing resources
+    cleanupMemory();
+    
+    // Create a new deck and shuffle it
+    deck = new deckOfCards(1); // Create a single deck
+    deck->shuffleDeck();       // Shuffle the deck
+    
+    // Clear player hands and piles
+    for (int i = 0; i < 3; i++) {
+        playerHands[i].makeEmpty();
+    }
+    
+    discardPile.makeEmpty();
+    drawPile.makeEmpty();
+    
+    // Reset game state
+    currentPlayer = 0;
+    gameOver = false;
+    lastSuit = '\0';
+    lastFace = '\0';
+    
+    // Deal cards
+    dealCards();
+}
+
+// Deal cards to players and initialize draw and discard piles
+inline void GoBoomGame::dealCards() {
+    // Deal 7 cards to each player
+    for (int i = 0; i < 7; i++) {
+        for (int j = 0; j < 3; j++) {
+            string cardStr = deck->takeCard();
+            if (!cardStr.empty()) {
+                card newCard;
+                newCard.face = cardStr[0];
+                newCard.suit = cardStr[1];
+                newCard.next = nullptr;
+                playerHands[j].addNode(newCard);
+            }
+        }
+    }
+    
+    // Fill the draw pile with remaining cards
+    string cardStr;
+    while (!(cardStr = deck->takeCard()).empty()) {
+        card newCard;
+        newCard.face = cardStr[0];
+        newCard.suit = cardStr[1];
+        newCard.next = nullptr;
+        drawPile.enqueue(newCard);
+    }
+    
+    // Place the top card from draw pile to discard pile
+    card topCard;
+    if (drawPile.dequeue(topCard)) {
+        discardPile.push(topCard);
+        lastSuit = topCard.suit;
+        lastFace = topCard.face;
+    }
+}
+
+// Check if a card is valid to play
+inline bool GoBoomGame::isValidPlay(const card& c) const {
+    return (c.suit == lastSuit || c.face == lastFace);
+}
+
+// Display the game state
+inline void GoBoomGame::displayGameState() const {
+    std::cout << "\n========== GAME STATE ==========\n";
+    std::cout << "Player " << (currentPlayer + 1) << "'s turn\n";
+    
+    // Display discard pile top
+    displayDiscardTop();
+    
+    // Display number of cards in draw pile
+    queue tempDrawPile = drawPile;
+    std::cout << "Draw pile: " << tempDrawPile.getQty()<<" cards remaining\n";
+    
+    // Display number of cards for each player
+    for (int i = 0; i < 3; i++) {
+        std::cout << "Player " << (i + 1) << " has " 
+                  << playerHands[i].getLength() << " cards\n";
+    }
+    std::cout << "===============================\n";
+}
+
+// Display a player's hand
+inline void GoBoomGame::displayHand(int playerIndex) const {
+    std::cout << "\nPlayer " << (playerIndex + 1) << "'s hand:\n";
+    
+    for (int i = 1; i <= playerHands[playerIndex].getLength(); i++) {
+        card c;
+        if (playerHands[playerIndex].find(i, c)) {
+            std::cout << i << ": " << c.face << c.suit << " ";
+        }
+    }
+    std::cout << std::endl;
+}
+
+// Display the top card of the discard pile
+inline void GoBoomGame::displayDiscardTop() const {
+    card topCard;
+    Stack tempDiscard = discardPile;
+    if (tempDiscard.peek(topCard)) {
+        std::cout << "Discard pile top: " << topCard.face 
+                  << topCard.suit << std::endl;
+    } else {
+        std::cout << "Discard pile is empty\n";
+    }
+}
+
+// Play a card from a player's hand
+inline bool GoBoomGame::playCard(int playerIndex, int cardPosition) {
+if (cardPosition < 1 || cardPosition > playerHands[playerIndex].getLength()){
+        return false;
+    }
+    
+    // Get the card
+    card selectedCard;
+    if (!playerHands[playerIndex].find(cardPosition, selectedCard)) {
+        return false;
+    }
+    
+    // Check if the play is valid
+    if (!isValidPlay(selectedCard)) {
+        std::cout << "Invalid move! Card must ";
+        std::cout<< "match suit or face value of top card.\n";
+        return false;
+    }
+    
+    // Remove card from player's hand and add to discard pile
+    card removedCard;
+    if (playerHands[playerIndex].deleteNode(cardPosition, removedCard)) {
+        discardPile.push(removedCard);
+        lastSuit = removedCard.suit;
+        lastFace = removedCard.face;
+        
+        std::cout << "Played " << removedCard.face << removedCard.suit 
+                  << std::endl;
+        return true;
+    }
+    
+    return false;
+}
+
+// Draw a card from the draw pile
+inline bool GoBoomGame::drawCard(int playerIndex) {
+    // If draw pile is empty, reset it using cards from discard pile
+    if (drawPile.isEmpty()) {
+        // Keep the top card of discard pile
+        card topCard;
+        if (discardPile.peek(topCard)) {
+            // Move all cards except top card from discard to draw pile
+            card temp;
+            discardPile.pop(temp); // Remove top card temporarily
+            
+            while (!discardPile.isEmpty()) {
+                card c;
+                discardPile.pop(c);
+                drawPile.enqueue(c);
+            }
+            
+            // Put top card back to discard pile
+            discardPile.push(temp);
+        }
+        
+        // If draw pile is still empty, return false
+        if (drawPile.isEmpty()) {
+            std::cout << "No cards left to draw!\n";
+            return false;
+        }
+    }
+    
+    // Draw a card from the draw pile
+    card drawnCard;
+    if (drawPile.dequeue(drawnCard)) {
+        playerHands[playerIndex].addNode(drawnCard);
+        std::cout << "Drew " << drawnCard.face << drawnCard.suit << std::endl;
+        return true;
+    }
+    
+    return false;
+}
+
+// Check if the game is over
+inline bool GoBoomGame::checkGameOver() {
+    for (int i = 0; i < 3; i++) {
+        if (playerHands[i].isEmpty()) {
+            gameOver = true;
+            return true;
+        }
+    }
+    return false;
+}
+
+// Clean up memory
+inline void GoBoomGame::cleanupMemory() {
+    // Delete deck
+    if (deck != nullptr) {
+        delete deck;
+        deck = nullptr;
+    }
+    
+    // Clear player hands
+    for (int i = 0; i < 3; i++) {
+        playerHands[i].makeEmpty();
+    }
+    
+    // Clear piles
+    discardPile.makeEmpty();
+    drawPile.makeEmpty();
+}
+
+// Start the game
+inline void GoBoomGame::startGame() {
+    // Display welcome message and rules
+    std::cout << "=== GO BOOM CARD GAME ===\n";
+    displayRules();
+    
+    // Initialize the game
+    initializeGame();
+    
+    // Game loop
+    while (!gameOver) {
+        // Display game state and play turn
+        displayGameState();
+        playTurn();
+        
+        // Check if game is over
+        if (checkGameOver()) {
+            break;
+        }
+        
+        // Switch to next player
+        switchPlayer();
+    }
+    
+    // Display winner
+    int winner = getWinner();
+    if (winner != -1) {
+        std::cout << "\n*** PLAYER " << (winner + 1) << " WINS! ***\n";
+    }
+}
+
+// Play a turn
+inline void GoBoomGame::playTurn() {
+    // Display current player's hand
+    displayHand(currentPlayer);
+    
+    // Get player action
+    int choice;
+    bool validAction = false;
+    
+    while (!validAction) {
+        std::cout << "\nPlayer " << (currentPlayer + 1) 
+                  << ", choose action:\n";
+        std::cout << "1. Play a card\n";
+        std::cout << "2. Draw a card\n";
+        std::cout << "Choice: ";
+        std::cin >> choice;
+        
+        switch (choice) {
+            case 1: {
+                int cardPosition;
+                std::cout << "Enter card position to play (1-" 
+                          << playerHands[currentPlayer].getLength() << "): ";
+                std::cin >> cardPosition;
+                
+                validAction = playCard(currentPlayer, cardPosition);
+                if (!validAction) {
+                    std::cout << "Invalid card selection. Try again.\n";
+                }
+                break;
+            }
+            case 2: {
+                validAction = drawCard(currentPlayer);
+                break;
+            }
+            default:
+                std::cout << "Invalid choice. Try again.\n";
+                break;
+        }
+    }
+    
+    // Check if the player has won
+    if (playerHands[currentPlayer].isEmpty()) {
+        gameOver = true;
+    }
+}
+
+// Switch to next player
+inline void GoBoomGame::switchPlayer() {
+    currentPlayer = (currentPlayer + 1) % 3;
+}
+
+// Display game rules
+inline void GoBoomGame::displayRules() const {
+    std::cout << "\n=== RULES ===\n";
+    std::cout << "1. Each player starts with 7 cards.\n";
+    std::cout << "2. Players take turns playing cards that match either";
+    std::cout<< "the suit or face value of the top card the discard pile.\n";
+    std::cout << "3. If a player cannot play, they must draw a card.\n";
+    std::cout << "4. The first player to get rid of all their cards wins.\n";
+    std::cout << "5. You will play as all three players.\n\n";
+}
+
+// Check if the game is over
+inline bool GoBoomGame::isGameOver() const {
+    return gameOver;
+}
+
+// Get the winner of the game
+inline int GoBoomGame::getWinner() const {
+    for (int i = 0; i < 3; i++) {
+        if (playerHands[i].isEmpty()) {
+            return i;
+        }
+    }
+    return -1; // No winner yet
+}
+
+#endif // GOBOOM_H
