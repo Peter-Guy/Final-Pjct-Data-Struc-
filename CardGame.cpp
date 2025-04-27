@@ -4,6 +4,7 @@
 #include "ThirtyOne.h"
 #include "98.h"
 #include "fiveCardStud.h"
+#include "playGoBoom.h"
 using namespace std;
 
 int main() {
@@ -34,7 +35,7 @@ int main() {
 				break;
 			case 3:
 				//Peter
-				//playGoBoom();
+				playGoBoom();
 				break;
 			case 4:
 				//Matthew
