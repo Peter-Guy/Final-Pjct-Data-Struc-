@@ -262,6 +262,9 @@ game98::~game98()
 void playNinetyEight()
 {
     game98 g;
+
+    system("cls");
+
     g.startGame();
 
     //Clear Screen after game
