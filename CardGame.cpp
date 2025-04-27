@@ -47,7 +47,7 @@ int main() {
 				break;
 			case 6:
 				//Joseph
-				//playRollingStone();
+				playRollingStone();
 				break;
 			case 7:
 				//Colin
