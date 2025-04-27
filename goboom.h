@@ -7,6 +7,7 @@
 #include "QUEUE.h"
 #include "STACK.h"
 #include "usll.h"
+using namespace std;
 
 class GoBoomGame {
 private:
@@ -132,44 +133,44 @@ bool GoBoomGame::isValidPlay(card& c) {
 
 // Display the game state
 void GoBoomGame::displayGameState(){
-    std::cout << "\n========== GAME STATE ==========\n";
-    std::cout << "Player " << (currentPlayer + 1) << "'s turn\n";
+    cout << "\n========== GAME STATE ==========\n";
+    cout << "Player " << (currentPlayer + 1) << "'s turn\n";
     
     // Display discard pile top
     displayDiscardTop();
     
     // Display number of cards in draw pile
-    std::cout << "Draw pile: " << drawPile.getQty()<<" cards remaining\n";
+    cout << "Draw pile: " << drawPile.getQty()<<" cards remaining\n";
     
     // Display number of cards for each player
     for (int i = 0; i < 3; i++) {
-        std::cout << "Player " << (i + 1) << " has " 
+        cout << "Player " << (i + 1) << " has " 
                   << playerHands[i].getLength() << " cards\n";
     }
-    std::cout << "===============================\n";
+    cout << "===============================\n";
 }
 
 // Display a player's hand
 void GoBoomGame::displayHand(int playerIndex) {
-    std::cout << "\nPlayer " << (playerIndex + 1) << "'s hand:\n";
+    cout << "\nPlayer " << (playerIndex + 1) << "'s hand:\n";
     
     for (int i = 1; i <= playerHands[playerIndex].getLength(); i++) {
         card c;
         if (playerHands[playerIndex].find(i, c)) {
-            std::cout << i << ": " << c.face << c.suit << " ";
+            cout << i << ": " << c.face << c.suit << " ";
         }
     }
-    std::cout << std::endl;
+    cout << endl;
 }
 
 // Display the top card of the discard pile
 void GoBoomGame::displayDiscardTop() {
     card topCard;
     if (discardPile.peek(topCard)) {
-        std::cout << "Discard pile top: " << topCard.face 
-                  << topCard.suit << std::endl;
+        cout << "Discard pile top: " << topCard.face 
+                  << topCard.suit << endl;
     } else {
-        std::cout << "Discard pile is empty\n";
+        cout << "Discard pile is empty\n";
     }
 }
 
@@ -187,8 +188,8 @@ if (cardPosition < 1 || cardPosition > playerHands[playerIndex].getLength()){
     
     // Check if the play is valid
     if (!isValidPlay(selectedCard)) {
-        std::cout << "Invalid move! Card must ";
-        std::cout<< "match suit or face value of top card.\n";
+        cout << "Invalid move! Card must ";
+        cout<< "match suit or face value of top card.\n";
         return false;
     }
     
@@ -199,8 +200,8 @@ if (cardPosition < 1 || cardPosition > playerHands[playerIndex].getLength()){
         lastSuit = removedCard.suit;
         lastFace = removedCard.face;
         
-        std::cout << "Played " << removedCard.face << removedCard.suit 
-                  << std::endl;
+        cout << "Played " << removedCard.face << removedCard.suit 
+                  << endl;
         return true;
     }
     
@@ -230,7 +231,7 @@ bool GoBoomGame::drawCard(int playerIndex) {
         
         // If draw pile is still empty, return false
         if (drawPile.isEmpty()) {
-            std::cout << "No cards left to draw!\n";
+            cout << "No cards left to draw!\n";
             return false;
         }
     }
@@ -239,7 +240,7 @@ bool GoBoomGame::drawCard(int playerIndex) {
     card drawnCard;
     if (drawPile.dequeue(drawnCard)) {
         playerHands[playerIndex].addNode(drawnCard);
-        std::cout << "Drew " << drawnCard.face << drawnCard.suit << std::endl;
+        cout << "Drew " << drawnCard.face << drawnCard.suit << endl;
         return true;
     }
     
@@ -278,7 +279,7 @@ void GoBoomGame::cleanupMemory() {
 // Start the game
 void GoBoomGame::startGame() {
     // Display welcome message and rules
-    std::cout << "=== GO BOOM CARD GAME ===\n";
+    cout << "=== GO BOOM CARD GAME ===\n";
     displayRules();
     
     // Initialize the game
@@ -302,7 +303,7 @@ void GoBoomGame::startGame() {
     // Display winner
     int winner = getWinner();
     if (winner != -1) {
-        std::cout << "\n*** PLAYER " << (winner + 1) << " WINS! ***\n";
+        cout << "\n*** PLAYER " << (winner + 1) << " WINS! ***\n";
     }
 }
 
@@ -316,23 +317,23 @@ void GoBoomGame::playTurn() {
     bool validAction = false;
     
     while (!validAction) {
-        std::cout << "\nPlayer " << (currentPlayer + 1) 
+        cout << "\nPlayer " << (currentPlayer + 1) 
                   << ", choose action:\n";
-        std::cout << "1. Play a card\n";
-        std::cout << "2. Draw a card\n";
-        std::cout << "Choice: ";
-        std::cin >> choice;
+        cout << "1. Play a card\n";
+        cout << "2. Draw a card\n";
+        cout << "Choice: ";
+        cin >> choice;
         
         switch (choice) {
             case 1: {
                 int cardPosition;
-                std::cout << "Enter card position to play (1-" 
+                cout << "Enter card position to play (1-" 
                           << playerHands[currentPlayer].getLength() << "): ";
-                std::cin >> cardPosition;
+                cin >> cardPosition;
                 
                 validAction = playCard(currentPlayer, cardPosition);
                 if (!validAction) {
-                    std::cout << "Invalid card selection. Try again.\n";
+                    cout << "Invalid card selection. Try again.\n";
                 }
                 break;
             }
@@ -341,7 +342,7 @@ void GoBoomGame::playTurn() {
                 break;
             }
             default:
-                std::cout << "Invalid choice. Try again.\n";
+                cout << "Invalid choice. Try again.\n";
                 break;
         }
     }
@@ -359,13 +360,13 @@ void GoBoomGame::switchPlayer() {
 
 // Display game rules
 void GoBoomGame::displayRules() {
-    std::cout << "\n=== RULES ===\n";
-    std::cout << "1. Each player starts with 7 cards.\n";
-    std::cout << "2. Players take turns playing cards that match either";
-    std::cout<< "the suit or face value of the top card the discard pile.\n";
-    std::cout << "3. If a player cannot play, they must draw a card.\n";
-    std::cout << "4. The first player to get rid of all their cards wins.\n";
-    std::cout << "5. You will play as all three players.\n\n";
+    cout << "\n=== RULES ===\n";
+    cout << "1. Each player starts with 7 cards.\n";
+    cout << "2. Players take turns playing cards that match either";
+    cout<< "the suit or face value of the top card the discard pile.\n";
+    cout << "3. If a player cannot play, they must draw a card.\n";
+    cout << "4. The first player to get rid of all their cards wins.\n";
+    cout << "5. You will play as all three players.\n\n";
 }
 
 // Check if the game is over
