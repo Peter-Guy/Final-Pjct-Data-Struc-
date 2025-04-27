@@ -2,6 +2,7 @@
 #include "deck.h"
 #include "crazy.h"
 #include "ThirtyOne.h"
+#include "98.h"
 using namespace std;
 
 int main() {
@@ -48,7 +49,7 @@ int main() {
 				break;
 			case 7:
 				//Colin
-				//playNinetyEight();
+				playNinetyEight();
 				break;
 			case 8:
 				//Evan
