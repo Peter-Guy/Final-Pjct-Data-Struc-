@@ -391,6 +391,10 @@ void playThirtyOne()
 {	
 	char choice;
 	int numPlayers;
+
+	//Clear screen before game start
+	system("cls");
+
 	do
 	{
 		cout << "How many players are participating? (3-8) ";

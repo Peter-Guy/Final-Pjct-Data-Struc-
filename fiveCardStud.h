@@ -655,6 +655,9 @@ void playFiveCardStud()
         else
         {
             endGame = true;
+
+            //Clear screen after game
+            system("cls");
         }
     }while(!endGame);
 }

@@ -263,6 +263,9 @@ void playNinetyEight()
 {
     game98 g;
     g.startGame();
+
+    //Clear Screen after game
+    system("cls");
 }
 
 #endif
