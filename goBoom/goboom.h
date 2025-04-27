@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <cstdlib>
 #include "goBoom/deck.h"
 #include "goBoom/QUEUE.h"
 #include "goBoom/STACK.h"
@@ -289,6 +290,13 @@ inline void GoBoomGame::startGame() {
     
     // Game loop
     while (!gameOver) {
+        // Clear console before each turn
+        #ifdef _WIN32
+            system("cls");
+        #else
+            system("clear");
+        #endif
+
         // Display game state and play turn
         displayGameState();
         playTurn();
