@@ -3,6 +3,7 @@
 #include "crazy.h"
 #include "ThirtyOne.h"
 #include "98.h"
+#include "fiveCardStud.h"
 using namespace std;
 
 int main() {
@@ -41,7 +42,7 @@ int main() {
 				break;
 			case 5:
 				//Jeremy
-				//playFiveCardStud();
+				playFiveCardStud();
 				break;
 			case 6:
 				//Joseph
