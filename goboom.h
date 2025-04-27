@@ -1,8 +1,19 @@
+/********************************************************************
+program name: goboom.h
+author: peter kirian
+due date: 4/28/25
+purpose: header file with class definitions and functions to be used
+         in the main file playGoBoom.h. This code contains the mechanics
+         for the game.
+************************************************************************/
+
+
 #ifndef GOBOOM_H
 #define GOBOOM_H
 
 #include <iostream>
 #include <string>
+#include <cstdlib>
 #include "deck.h"
 #include "QUEUE.h"
 #include "STACK.h"
@@ -287,6 +298,13 @@ void GoBoomGame::startGame() {
     
     // Game loop
     while (!gameOver) {
+        // Clear console before each turn
+        #ifdef _WIN32
+            system("cls");
+        #else
+            system("clear");
+        #endif
+
         // Display game state and play turn
         displayGameState();
         playTurn();

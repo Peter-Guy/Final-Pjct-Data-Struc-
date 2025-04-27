@@ -1,3 +1,9 @@
+/************************************************************
+ author: Peter Kirian
+ program description: main file for the Go Boom game.
+            Uses goboom.h which contains the mechanics of the game.
+***************************************************************/
+
 #include <iostream>
 #include "goboom.h"
 using namespace std;
