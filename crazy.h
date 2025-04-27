@@ -23,7 +23,6 @@ class CrazyEight {
         int *scores;
         void zeroScores();
         bool eightHandle();
-        
     public:
         CrazyEight(int =2);
         ~CrazyEight();
