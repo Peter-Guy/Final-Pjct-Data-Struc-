@@ -101,7 +101,7 @@ void game98::drawCard(int playerNum)
     }
 }
 
-// Display player's hand
+//Display player's hand
 void game98::displayHand(int playerNum) 
 {
     cout << "Your cards:\n";
@@ -186,7 +186,7 @@ void game98::playTurn(int playerNum)
             players[playerNum].enqueue(hand[i]);
     }
 
-    // Draw new card
+    //Draw new card
     drawCard(playerNum);
 
     cout << "Press enter to end your turn.";
