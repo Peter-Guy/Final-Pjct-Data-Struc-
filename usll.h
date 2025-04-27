@@ -1,3 +1,15 @@
+/******************************************************************************
+Program Name: Unsorted Linked List Header
+Author: Matthew Lake
+Assignment Number: Final Group Project
+Due Date: 4/28/2025
+******************************************************************************/
+
+/******************************************************************************
+Program Description:
+Header file for unsorted linked list structures.
+******************************************************************************/
+
 #ifndef USLL
 #define USLL
 

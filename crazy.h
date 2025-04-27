@@ -1,3 +1,17 @@
+/******************************************************************************
+Program Name: Crazy Eights
+Author: Matthew Lake
+Assignment Number: Final Group Project
+Due Date: 4/28/2025
+******************************************************************************/
+
+/******************************************************************************
+Program Description:
+Header file for Crazy Eights game. Includes a class that contains all game
+functionality and data the game needs. Also includes a function used to drive
+the game object to run a game.
+******************************************************************************/
+
 #ifndef CRAZY_H
 #define CRAZY_H
 

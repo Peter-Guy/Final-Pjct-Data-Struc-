@@ -1,3 +1,15 @@
+/******************************************************************************
+Program Name: Deck Header
+Author: Greg Panczner and CIS-211 Data Structures Class
+Assignment Number: Final Group Project
+Due Date: 4/28/2025
+******************************************************************************/
+
+/******************************************************************************
+Program Description:
+Header file deck of cards functionality.
+******************************************************************************/
+
 #ifndef DECK_H
 #define DECK_H
 
