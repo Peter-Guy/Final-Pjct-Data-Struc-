@@ -1,3 +1,12 @@
+/*
+Program name: Ninety Eight
+Author: Colin Rosier
+Assingment: Final Project 
+Date: 4/23/25
+Description: This header file contains the logic to play the game ninety eight
+using the deck.h header and the queue.h header file 
+*/
+
 #ifndef GAME98_H
 #define GAME98_H
 
