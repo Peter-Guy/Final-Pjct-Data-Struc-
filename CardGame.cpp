@@ -5,6 +5,7 @@
 #include "98.h"
 #include "fiveCardStud.h"
 #include "playGoBoom.h"
+#include "RollingStone.h"
 using namespace std;
 
 int main() {
