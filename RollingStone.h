@@ -1,4 +1,10 @@
-
+/*
+Program: RollingStone.h
+Author: Joseph Reyes
+Purpose: This header file contains the logic to play the card game
+Rolling Stone using the deck.h header file
+*/    
+    
 #ifndef ROLLINGSTONE_H
 #define ROLLINGSTONE_H
 
