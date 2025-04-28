@@ -47,8 +47,7 @@ class ThirtyOne
 		string replaceCard(int, int, string);
 		bool takeLives(int, int);
 		bool gameWinner();
-		
-		
+		~ThirtyOne();
 };
 
 void playThirtyOne();
@@ -109,6 +108,14 @@ ThirtyOne::ThirtyOne(int num)
 	p = new thirtyOnePlayer[numPlayers];
 	deck = new deckOfCards[numPlayers];
 	loadGame();
+}
+
+ThirtyOne::~ThirtyOne()
+{
+	delete [] p;
+	delete [] deck;
+	p = nullptr;
+	deck = nullptr;
 }
 
 int ThirtyOne::getPlayers()
