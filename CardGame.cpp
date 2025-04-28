@@ -1,3 +1,10 @@
+/*************************************************************************
+Program: card Game
+AUthors: Peter, Matthew, Jeremy, Joseph, Colin, Evan
+due date: 4/28/2025
+purpose: The program uses header files provided by each of the authors.
+		Each case of the menu plays a game using one of the header files.
+****************************************************************************/
 #include <iostream>
 #include "deck.h"
 #include "crazy.h"
