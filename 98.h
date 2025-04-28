@@ -258,7 +258,7 @@ game98::~game98()
 }
 
 
-//Free-standing function to be called from the game menu
+//Function to be called from the game menu
 void playNinetyEight()
 {
     game98 g;
