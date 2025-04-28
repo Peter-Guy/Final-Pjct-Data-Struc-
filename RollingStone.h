@@ -101,6 +101,8 @@ void RollingStone::playGame()
             cout << "No matching card. Picking up pile and starting new round.\n";
             pickupPile(currentPlayer);  // Pickup cards from pile
             startNewRound();  // Start a new round
+            this_thread::sleep_for(chrono::seconds(1));  // 1-second pause
+            system("cls"); // Clear screen after round
             continue;  // Player who couldn't follow suit plays again
         }
 
@@ -136,6 +138,7 @@ void RollingStone::playGame()
             currentPlayer = highestIndex;  // Move to the player who won the round
             startNewRound();  // Start a new round
             this_thread::sleep_for(chrono::seconds(1));  // 1-second pause
+            system("cls"); // Clear screen after round
         }
         else
         {
@@ -146,6 +149,7 @@ void RollingStone::playGame()
     }
 
     cout << "\n=== Game Over ===" << endl;
+    this_thread::sleep_for(chrono::seconds(1));  // 1-second pause
 }
 
 // Deal cards to players (only 7-Ace)
